@@ -1,4 +1,4 @@
-package.json  {
+{
   "name": "sql-practice-lab",
   "version": "1.0.0",
   "description": "Interactive web-based platform for practicing SQL and database concepts",
@@ -9,7 +9,7 @@ package.json  {
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "cd server && npm start",
-    "dev": "concurrently \"npm start\" \"npm run server\""
+       "dev": "concurrently \"npm start\" \"npm run server\"
   },
   "keywords": [
     "sql",
