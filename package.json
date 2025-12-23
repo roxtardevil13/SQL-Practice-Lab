@@ -4,12 +4,13 @@
   "description": "Interactive web-based platform for practicing SQL and database concepts",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server/server.js",
+    "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "cd server && npm start",
-    "dev": "concurrently 'npm start' 'npm run server'"
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "keywords": [
     "sql",
