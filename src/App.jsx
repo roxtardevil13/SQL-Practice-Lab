@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 
+const API_BASE_URL = window.location.origin === 'http://localhost:3000' ? 'http://localhost:5000' : '';
+
 function App() {
   const [sqlCommand, setSqlCommand] = useState('');
   const [output, setOutput] = useState('');
@@ -14,20 +16,16 @@ function App() {
       setError('Please enter a SQL command');
       return;
     }
-
     setLoading(true);
     setError('');
     setOutput('');
-
     try {
-      const response = await fetch('http://localhost:5000/api/execute', {
+      const response = await fetch(`${API_BASE_URL}/api/execute`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: sqlCommand })
       });
-
       const data = await response.json();
-
       if (response.ok) {
         setOutput(JSON.stringify(data.result, null, 2));
         setHistory([...history, { query: sqlCommand, timestamp: new Date().toLocaleTimeString() }]);
@@ -45,7 +43,7 @@ function App() {
 
   const fetchTables = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tables');
+      const response = await fetch(`${API_BASE_URL}/api/tables`);
       const data = await response.json();
       if (response.ok) {
         setTables(data.tables);
@@ -68,7 +66,6 @@ function App() {
         <h1>SQL Practice Lab</h1>
         <p>Learn SQL by writing real database queries</p>
       </header>
-
       <div className="main-content">
         <div className="editor-section">
           <h2>SQL Editor</h2>
@@ -76,7 +73,12 @@ function App() {
             className="sql-input"
             value={sqlCommand}
             onChange={(e) => setSqlCommand(e.target.value)}
-            placeholder="Enter SQL commands here...\n\nExamples:\nCREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);\nINSERT INTO users (id, name) VALUES (1, 'John');\nSELECT * FROM users;"
+            placeholder="Enter SQL commands here...
+
+Examples:
+CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);
+INSERT INTO users (id, name) VALUES (1, 'John');
+SELECT * FROM users;"
             spellCheck="false"
           />
           <div className="button-group">
@@ -87,7 +89,6 @@ function App() {
           </div>
           {error && <div className="error-message">{error}</div>}
         </div>
-
         <div className="results-section">
           <div className="output-panel">
             <div className="panel-header">
@@ -96,7 +97,6 @@ function App() {
             </div>
             <pre className="output-display">{output || 'Results will appear here...'}</pre>
           </div>
-
           <div className="info-panel">
             <div className="panel-header">
               <h3>Database Tables</h3>
@@ -110,7 +110,6 @@ function App() {
               )}
             </div>
           </div>
-
           <div className="history-panel">
             <div className="panel-header">
               <h3>Query History</h3>
@@ -131,7 +130,6 @@ function App() {
           </div>
         </div>
       </div>
-
       <footer className="footer">
         <p>SQL Practice Lab - Practice database concepts with real SQL execution</p>
       </footer>
